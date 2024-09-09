@@ -17,7 +17,7 @@ const divi = (x, y) => {
 
 
 
-console.log(add(5 ,6));
-console.log(sub(6,3));
-console.log(mult(4,8));
-console.log(divi( 18,6));
+console.log(add(5, 6));
+console.log(sub(6, 3));
+console.log(mult(4, 8));
+console.log(divi(18, 6));
