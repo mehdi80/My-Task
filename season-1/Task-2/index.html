@@ -8,20 +8,24 @@
 </head>
 
 <body>
-    <h2>فرم ورود</h2>
-    <form>
-        <label for="username">نام کاربری:</label>
-        <input type="text" id="username" name="username" required>
+    <div class="container">
+        <div class="wraper">
+            <span class="header">فرم ورود</span>
+            <form>
+                <label for="username" class="label">نام کاربری:</label>
+                <input type="text" id="username" name="username" required>
 
-        <br>
+                <br>
 
-        <label for="password">رمز عبور:</label>
-        <input type="password" id="password" name="password" required>
+                <label for="password" class="label">رمز عبور:</label>
+                <input type="password" id="password" name="password" required>
 
-        <br>
+                <br>
 
-        <button type="submit" onclick="showAlert(event)">ارسال</button>
-    </form>
+                <button class="btn" type="submit" onclick="showAlert(event)">ارسال</button>
+            </form>
+        </div>
+    </div>
     <script src="login.js"></script>
 </body>
 
