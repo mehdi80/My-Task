@@ -4,28 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <title>login form</title>
+
     <link rel="stylesheet" href="login-style.css">
+
 </head>
 
 <body>
     <div class="container">
-        <div class="wraper">
-            <span class="header">ورود</span>
-            <form>
-                <label for="username" class="label">نام کاربری:</label>
-                <input type="text" id="username" name="username" required>
+        <div class="wraper box">
 
-                <br>
+            <form class="my-form">
+                <span class="header">ورود</span>
+
+                <label for="username" class="label">نام کاربری:</label>
+                <input type="text" id="username" name="username" required />
 
                 <label for="password" class="label">رمز عبور:</label>
-                <input type="password" id="password" name="password" required>
-
-                <br>
-
-                <button class="btn" type="submit" onclick="showAlert(event)">ورود</button>
+                <input type="password" id="password" name="password" required />
+                <div class="forget">
+                    <a class="" href="forget-pass.html">فراموشی رمز عبور</a>
+                </div>
+                <div class="btn-container">
+                    <button class="btn" type="submit" onclick="showAlert(event)">ورود</button>
+                    <a class="btn sub-btn" href="sign-up.html">ثبت نام</a>
+                </div>
             </form>
+
         </div>
     </div>
+
     <script src="login.js"></script>
 </body>
 
