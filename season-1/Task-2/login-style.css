@@ -17,15 +17,13 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    min-height: 97vh;
-
+    height: 100vh;
 }
 
 .wraper {
     display: flex;
     justify-content: center;
     width: 500px;
-    height: 300px;
     background: #fff;
     border-radius: 10px;
 }
@@ -33,20 +31,19 @@ body {
 .my-form {
     display: flex;
     flex-direction: column;
-    position: relative;
+    gap: 10px;
 }
 
 .header {
     align-self: center;
     height: 25px;
     font-size: 25px;
-    margin: 20px 0 20px 0;
+    margin: 20px 0;
 }
 
 .label {
     display: block;
     width: fit-content;
-    margin: 10px 0;
 }
 
 input {
@@ -58,23 +55,18 @@ input {
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.80);
 }
 
-
-.forget {
-    margin-top: 10px;
-}
-
 .btn-container {
     display: flex;
     width: 170px;
-    justify-content: space-between;
-    position: absolute;
-    bottom: 15px;
+    margin: 10px 0 15px 0;
+    justify-content: space-around;
 }
 
 .btn {
-    width: 80px;
+
     height: 30px;
     font-size: 15px;
+    padding: 0 15px 0 15px;
     border-radius: 15px;
     color: #fff;
     border: none;
@@ -90,8 +82,7 @@ input {
 .sub-btn {
     display: inline-block;
     text-decoration: none;
-    padding: 5px;
-    box-sizing: border-box;
+    padding: 5px 15px;
     text-align: center;
 }
 
