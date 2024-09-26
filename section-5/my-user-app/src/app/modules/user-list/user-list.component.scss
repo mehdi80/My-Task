@@ -1,0 +1,19 @@
+.user-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+}
+.user-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  width: 200px;
+  text-align: center;
+  cursor: pointer;
+}
+.user-card img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
