@@ -8,19 +8,19 @@ window.onload = function (): void {
   }
 };
 
-async function displayUserCards(): Promise<void> {
+function displayUserCards(): void {
   const users: User[] = getUsers();
   const container: HTMLDivElement = document.getElementById(
     "userCards"
   ) as HTMLDivElement;
 
-  users.forEach((user: User) => {
+  users.forEach((user: User): void => {
     const userCard: HTMLDivElement = createUserCard(user);
     container.appendChild(userCard);
   });
 }
 
-function createUserCard(user: User) {
+function createUserCard(user: User): HTMLDivElement {
   const card: HTMLDivElement = document.createElement("div") as HTMLDivElement;
   card.className = "card mx-2";
   card.style.width = "15rem";

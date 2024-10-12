@@ -1,38 +1,24 @@
 "use strict";
-const fakeData = {
-    tasks: [
-        { userId: 1, title: "تسک اول", completed: false },
-        { userId: 1, title: "تسک دوم", completed: true },
-        { userId: 2, title: "تسک سوم", completed: false },
-    ],
-    posts: [
-        {
-            userId: 1,
-            title: "پست اول",
-            content: "محتوای پست اول",
-            comments: ["کامنت اول", "کامنت دوم"],
-        },
-        {
-            userId: 2,
-            title: "پست دوم",
-            content: "محتوای پست دوم",
-            comments: ["کامنت سوم"],
-        },
-    ],
-    albums: [
-        { userId: 1, title: "آلبوم اول", photos: ["عکس1.jpg", "عکس2.jpg"] },
-        { userId: 2, title: "آلبوم دوم", photos: ["عکس3.jpg"] },
-    ],
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
 function loadUsers() {
-    const users = getUsers();
-    const userList = document.getElementById("userList");
-    users.forEach((user) => {
-        const listItem = document.createElement("tr");
-        listItem.innerHTML = `
+    return __awaiter(this, void 0, void 0, function* () {
+        const users = yield getApiUsers();
+        const userList = document.getElementById("userList");
+        if (users) {
+            users.forEach((user) => {
+                const listItem = document.createElement("tr");
+                listItem.innerHTML = `
             <th scope="col">${user.id}</th>
-            <td >${user.firstName} ${user.lastName}</td>
-            <td >${user.userName}</td>
+            <td >${user.name}</td>
+            <td >${user.username}</td>
             <td >${user.email}</td>
             <td >${user.phone}</td>
             <td>
@@ -41,61 +27,82 @@ function loadUsers() {
                 <button class="btn btn-warning" onclick="showAlbums(${user.id})">آلبوم</button>
             </td>
         `;
-        userList.appendChild(listItem);
+                userList.appendChild(listItem);
+            });
+        }
     });
 }
 function showTasks(userId) {
-    const userTasks = fakeData.tasks.filter((task) => task.userId === userId);
-    const detailsDiv = document.getElementById("show");
-    detailsDiv.innerHTML = `<h2>تسک‌های کاربر ${userId}</h2>`;
-    if (userTasks.length === 0) {
-        detailsDiv.innerHTML += "<p>هیچ تسکی وجود ندارد.</p>";
-    }
-    else {
-        userTasks.forEach((task) => {
-            detailsDiv.innerHTML += `<p>${task.title} - ${task.completed ? "انجام شده" : "انجام نشده"}</p>`;
-        });
-    }
+    return __awaiter(this, void 0, void 0, function* () {
+        const tasks = yield getTasks();
+        const userTasks = tasks
+            ? tasks.filter((task) => task.userId === userId)
+            : [];
+        const detailsDiv = document.getElementById("show");
+        detailsDiv.innerHTML = `<h2>تسک‌های کاربر ${userId}</h2>`;
+        if (userTasks.length === 0) {
+            detailsDiv.innerHTML += "<p>هیچ تسکی وجود ندارد.</p>";
+        }
+        else {
+            userTasks.forEach((task) => {
+                detailsDiv.innerHTML += `<p>${task.title} - ${task.completed ? "انجام شده" : "انجام نشده"}</p>`;
+            });
+        }
+    });
 }
 function showPosts(userId) {
-    const userPosts = fakeData.posts.filter((post) => post.userId === userId);
-    const detailsDiv = document.getElementById("show");
-    detailsDiv.innerHTML = `<h2>پست‌های کاربر ${userId}</h2>`;
-    if (userPosts.length === 0) {
-        detailsDiv.innerHTML += "<p>هیچ پستی وجود ندارد.</p>";
-    }
-    else {
-        userPosts.forEach((post) => {
-            detailsDiv.innerHTML += `<h3>${post.title}</h3><p>${post.content}</p>`;
-            if (post.comments.length > 0) {
-                detailsDiv.innerHTML += "<strong>کامنت‌ها:</strong><ul>";
-                post.comments.forEach((comment) => {
-                    detailsDiv.innerHTML += `<li>${comment}</li>`;
-                });
-                detailsDiv.innerHTML += "</ul>";
+    return __awaiter(this, void 0, void 0, function* () {
+        const posts = yield getPosts();
+        const userPosts = posts
+            ? posts.filter((post) => post.userId === userId)
+            : [];
+        const detailsDiv = document.getElementById("show");
+        detailsDiv.innerHTML = `<h2>پست‌های کاربر ${userId}</h2>`;
+        if (userPosts.length === 0) {
+            detailsDiv.innerHTML += "<p>هیچ پستی وجود ندارد.</p>";
+        }
+        else {
+            for (const post of userPosts) {
+                detailsDiv.innerHTML += `<h3>${post.title}</h3><p>${post.body}</p>`;
+                const comments = yield getComments(post.id);
+                if (comments && comments.length > 0) {
+                    detailsDiv.innerHTML += "<strong>کامنت‌ها:</strong><ul>";
+                    comments.forEach((comment) => {
+                        detailsDiv.innerHTML += `<li>${comment.body}</li>`;
+                    });
+                    detailsDiv.innerHTML += "</ul>";
+                }
+                else {
+                    detailsDiv.innerHTML += "<p>هیچ کامنتی وجود ندارد.</p>";
+                }
             }
-            else {
-                detailsDiv.innerHTML += "<p>هیچ کامنتی وجود ندارد.</p>";
-            }
-        });
-    }
+        }
+    });
 }
 function showAlbums(userId) {
-    const userAlbums = fakeData.albums.filter((album) => album.userId === userId);
-    const detailsDiv = document.getElementById("show");
-    detailsDiv.innerHTML = `<h2>آلبوم‌های کاربر ${userId}</h2>`;
-    if (userAlbums.length === 0) {
-        detailsDiv.innerHTML += "<p>هیچ آلبومی وجود ندارد.</p>";
-    }
-    else {
-        userAlbums.forEach((album) => {
-            detailsDiv.innerHTML += `<h3>${album.title}</h3><ul>`;
-            album.photos.forEach((photo) => {
-                detailsDiv.innerHTML += `<li>${photo}</li>`;
-            });
-            detailsDiv.innerHTML += "</ul>";
-        });
-    }
+    return __awaiter(this, void 0, void 0, function* () {
+        const albums = yield getAlbums();
+        const userAlbums = albums
+            ? albums.filter((album) => album.userId === userId)
+            : [];
+        const detailsDiv = document.getElementById("show");
+        detailsDiv.innerHTML = `<h2>آلبوم‌های کاربر ${userId}</h2>`;
+        if (userAlbums.length === 0) {
+            detailsDiv.innerHTML += "<p>هیچ آلبومی وجود ندارد.</p>";
+        }
+        else {
+            for (const album of userAlbums) {
+                detailsDiv.innerHTML += `<h3>${album.title}</h3><ul>`;
+                const photos = yield getPhotos(album.id);
+                if (photos && photos.length > 0) {
+                    photos.forEach((photo) => {
+                        detailsDiv.innerHTML += `<li><img src="${photo.thumbnailUrl}" alt="${photo.title}"></li>`;
+                    });
+                }
+                detailsDiv.innerHTML += "</ul>";
+            }
+        }
+    });
 }
 function userList() {
     window.location.href = "../user-list/user-list.html";

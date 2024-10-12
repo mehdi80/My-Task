@@ -1,41 +1,16 @@
-const fakeData = {
-  tasks: [
-    { userId: 1, title: "تسک اول", completed: false },
-    { userId: 1, title: "تسک دوم", completed: true },
-    { userId: 2, title: "تسک سوم", completed: false },
-  ],
-  posts: [
-    {
-      userId: 1,
-      title: "پست اول",
-      content: "محتوای پست اول",
-      comments: ["کامنت اول", "کامنت دوم"],
-    },
-    {
-      userId: 2,
-      title: "پست دوم",
-      content: "محتوای پست دوم",
-      comments: ["کامنت سوم"],
-    },
-  ],
-  albums: [
-    { userId: 1, title: "آلبوم اول", photos: ["عکس1.jpg", "عکس2.jpg"] },
-    { userId: 2, title: "آلبوم دوم", photos: ["عکس3.jpg"] },
-  ],
-};
-
-function loadUsers(): void {
-  const users: User[] = getUsers();
+async function loadUsers(): Promise<void> {
+  const users: UsersApi[] | null = await getApiUsers();
   const userList: HTMLElement = document.getElementById(
     "userList"
   ) as HTMLElement;
 
-  users.forEach((user: User): void => {
-    const listItem: HTMLElement = document.createElement("tr") as HTMLElement;
-    listItem.innerHTML = `
+  if (users) {
+    users.forEach((user: UsersApi): void => {
+      const listItem: HTMLElement = document.createElement("tr") as HTMLElement;
+      listItem.innerHTML = `
             <th scope="col">${user.id}</th>
-            <td >${user.firstName} ${user.lastName}</td>
-            <td >${user.userName}</td>
+            <td >${user.name}</td>
+            <td >${user.username}</td>
             <td >${user.email}</td>
             <td >${user.phone}</td>
             <td>
@@ -44,12 +19,16 @@ function loadUsers(): void {
                 <button class="btn btn-warning" onclick="showAlbums(${user.id})">آلبوم</button>
             </td>
         `;
-    userList.appendChild(listItem);
-  });
+      userList.appendChild(listItem);
+    });
+  }
 }
 
-function showTasks(userId: number): void {
-  const userTasks = fakeData.tasks.filter((task) => task.userId === userId);
+async function showTasks(userId: number): Promise<void> {
+  const tasks: Task[] | null = await getTasks();
+  const userTasks: Task[] = tasks
+    ? tasks.filter((task: Task): boolean => task.userId === userId)
+    : [];
   const detailsDiv: HTMLElement = document.getElementById(
     "show"
   ) as HTMLElement;
@@ -59,7 +38,7 @@ function showTasks(userId: number): void {
   if (userTasks.length === 0) {
     detailsDiv.innerHTML += "<p>هیچ تسکی وجود ندارد.</p>";
   } else {
-    userTasks.forEach((task) => {
+    userTasks.forEach((task: Task): void => {
       detailsDiv.innerHTML += `<p>${task.title} - ${
         task.completed ? "انجام شده" : "انجام نشده"
       }</p>`;
@@ -67,8 +46,11 @@ function showTasks(userId: number): void {
   }
 }
 
-function showPosts(userId: number): void {
-  const userPosts = fakeData.posts.filter((post) => post.userId === userId);
+async function showPosts(userId: number): Promise<void> {
+  const posts: Post[] | null = await getPosts();
+  const userPosts: Post[] = posts
+    ? posts.filter((post: Post): boolean => post.userId === userId)
+    : [];
   const detailsDiv: HTMLElement = document.getElementById(
     "show"
   ) as HTMLElement;
@@ -78,26 +60,29 @@ function showPosts(userId: number): void {
   if (userPosts.length === 0) {
     detailsDiv.innerHTML += "<p>هیچ پستی وجود ندارد.</p>";
   } else {
-    userPosts.forEach((post): void => {
-      detailsDiv.innerHTML += `<h3>${post.title}</h3><p>${post.content}</p>`;
+    for (const post of userPosts) {
+      detailsDiv.innerHTML += `<h3>${post.title}</h3><p>${post.body}</p>`;
 
-      if (post.comments.length > 0) {
+      const comments: Comment[] | null = await getComments(post.id);
+      if (comments && comments.length > 0) {
         detailsDiv.innerHTML += "<strong>کامنت‌ها:</strong><ul>";
-        post.comments.forEach((comment): void => {
-          detailsDiv.innerHTML += `<li>${comment}</li>`;
+        comments.forEach((comment: Comment): void => {
+          detailsDiv.innerHTML += `<li>${comment.body}</li>`;
         });
         detailsDiv.innerHTML += "</ul>";
       } else {
         detailsDiv.innerHTML += "<p>هیچ کامنتی وجود ندارد.</p>";
       }
-    });
+    }
   }
 }
 
-function showAlbums(userId: number): void {
-  const userAlbums = fakeData.albums.filter(
-    (album): boolean => album.userId === userId
-  );
+async function showAlbums(userId: number): Promise<void> {
+  const albums: Album[] | null = await getAlbums();
+  const userAlbums: Album[] = albums
+    ? albums.filter((album: Album): boolean => album.userId === userId)
+    : [];
+
   const detailsDiv: HTMLElement = document.getElementById(
     "show"
   ) as HTMLElement;
@@ -107,15 +92,17 @@ function showAlbums(userId: number): void {
   if (userAlbums.length === 0) {
     detailsDiv.innerHTML += "<p>هیچ آلبومی وجود ندارد.</p>";
   } else {
-    userAlbums.forEach((album) => {
+    for (const album of userAlbums) {
       detailsDiv.innerHTML += `<h3>${album.title}</h3><ul>`;
 
-      album.photos.forEach((photo: string): void => {
-        detailsDiv.innerHTML += `<li>${photo}</li>`;
-      });
-
+      const photos: any[] | null = await getPhotos(album.id);
+      if (photos && photos.length > 0) {
+        photos.forEach((photo): void => {
+          detailsDiv.innerHTML += `<li><img src="${photo.thumbnailUrl}" alt="${photo.title}"></li>`;
+        });
+      }
       detailsDiv.innerHTML += "</ul>";
-    });
+    }
   }
 }
 
