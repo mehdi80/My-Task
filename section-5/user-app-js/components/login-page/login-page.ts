@@ -11,10 +11,10 @@ loginForm.addEventListener("submit", (event: Event): void => {
     document.getElementById("password") as HTMLInputElement
   ).value;
 
-  const users: User[] = getUsers();
+  const users: LocalUser[] = getUsers();
   console.log(users);
-  const user: User | undefined = users.find(
-    (user: User) => user.userName == userName && user.password == password
+  const user: LocalUser | undefined = users.find(
+    (user: LocalUser) => user.userName == userName && user.password == password
   );
 
   if (user) {

@@ -1,4 +1,4 @@
-interface User {
+interface LocalUser {
   id: number;
   firstName: string;
   lastName: string;
@@ -8,7 +8,7 @@ interface User {
   password: string;
 }
 
-function setItem(key: string, value: User[]): void {
+function setItem(key: string, value: LocalUser[]): void {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
@@ -25,7 +25,7 @@ function clearStorage(): void {
   localStorage.clear();
 }
 
-function getUsers(): User[] {
+function getUsers(): LocalUser[] {
   return getItem("users") || [];
 }
 
@@ -37,7 +37,7 @@ function addUser(
   phone: string,
   password: string
 ): void {
-  const users: User[] = getUsers();
+  const users: LocalUser[] = getUsers();
 
   const newUserId: number =
     users.length > 0 ? users[users.length - 1].id + 1 : 1;

@@ -5,9 +5,9 @@ function loadUserDetails(): void {
   const userId: string | null = urlParams.get("id");
 
   if (userId) {
-    const users: User[] = getUsers();
-    const user: User | undefined = users.find(
-      (user: User): boolean => user.id === parseInt(userId)
+    const users: LocalUser[] = getUsers();
+    const user: LocalUser | undefined = users.find(
+      (user: LocalUser): boolean => user.id === parseInt(userId)
     );
 
     if (user) {
@@ -22,7 +22,7 @@ function loadUserDetails(): void {
   }
 }
 
-function displayUserDetails(user: User): void {
+function displayUserDetails(user: LocalUser): void {
   const detailsDiv: HTMLElement = document.getElementById(
     "userDetail"
   ) as HTMLElement;
