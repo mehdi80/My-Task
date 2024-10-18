@@ -17,7 +17,7 @@ function getUsers() {
 }
 function addUser(firstName, lastName, userName, email, phone, password) {
     const users = getUsers();
-    const newUserId = users.length > 0 ? users[users.length - 1].id + 1 : 1;
+    const newUserId = users.length > 0 ? users[users.length - 1].id + 1 : 11;
     const newUser = {
         id: newUserId,
         firstName,

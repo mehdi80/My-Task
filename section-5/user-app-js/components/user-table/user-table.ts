@@ -1,22 +1,41 @@
+window.onload = function (): void {
+  const loggedInUser: string | null = localStorage.getItem("loggedInUser");
+
+  if (!loggedInUser) {
+    window.location.href = "../../index.html";
+  } else {
+    loadUsers();
+  }
+};
+
 async function loadUsers(): Promise<void> {
-  const users: UsersApi[] | null = await getApiUsers();
+  const localUsers: LocalUser[] = getUsers();
+  const apiUsers: UsersApi[] | null = await getApiUsers();
+  const users: (LocalUser | UsersApi)[] = [...apiUsers!, ...localUsers];
   const userList: HTMLElement = document.getElementById(
     "userList"
   ) as HTMLElement;
 
   if (users) {
-    users.forEach((user: UsersApi): void => {
+    users.forEach((user: any): void => {
+      const username: string = user.firstName + " " + user.lastName;
       const listItem: HTMLElement = document.createElement("tr") as HTMLElement;
       listItem.innerHTML = `
-            <th scope="col">${user.id}</th>
-            <td >${user.name}</td>
-            <td >${user.username}</td>
-            <td >${user.email}</td>
-            <td >${user.phone}</td>
+            <th>${user.id}</th>
+            <td>${user.name || username}</td>
+            <td>${user.username || user.userName}</td>
+            <td>${user.email}</td>
+            <td>${user.phone}</td>
             <td>
-                <button class="btn btn-primary" onclick="showTasks(${user.id})">تسک</button>
-                <button class="btn btn-danger" onclick="showPosts(${user.id})">پست</button>
-                <button class="btn btn-warning" onclick="showAlbums(${user.id})">آلبوم</button>
+                <button class="btn  btn-primary" onclick="showTasks(${
+                  user.id
+                })">تسک</button>
+                <button class="btn btn-danger" onclick="showPosts(${
+                  user.id
+                })">پست</button>
+                <button class="btn btn-warning" onclick="showAlbums(${
+                  user.id
+                })">آلبوم</button>
             </td>
         `;
       userList.appendChild(listItem);

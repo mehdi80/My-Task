@@ -40,7 +40,7 @@ function addUser(
   const users: LocalUser[] = getUsers();
 
   const newUserId: number =
-    users.length > 0 ? users[users.length - 1].id + 1 : 1;
+    users.length > 0 ? users[users.length - 1].id + 1 : 11;
 
   const newUser = {
     id: newUserId,

@@ -8,21 +8,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+window.onload = function () {
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (!loggedInUser) {
+        window.location.href = "../../index.html";
+    }
+    else {
+        loadUsers();
+    }
+};
 function loadUsers() {
     return __awaiter(this, void 0, void 0, function* () {
-        const users = yield getApiUsers();
+        const localUsers = getUsers();
+        const apiUsers = yield getApiUsers();
+        const users = [...apiUsers, ...localUsers];
         const userList = document.getElementById("userList");
         if (users) {
             users.forEach((user) => {
+                const username = user.firstName + " " + user.lastName;
                 const listItem = document.createElement("tr");
                 listItem.innerHTML = `
-            <th scope="col">${user.id}</th>
-            <td >${user.name}</td>
-            <td >${user.username}</td>
-            <td >${user.email}</td>
-            <td >${user.phone}</td>
+            <th>${user.id}</th>
+            <td>${user.name || username}</td>
+            <td>${user.username || user.userName}</td>
+            <td>${user.email}</td>
+            <td>${user.phone}</td>
             <td>
-                <button class="btn btn-primary" onclick="showTasks(${user.id})">تسک</button>
+                <button class="btn  btn-primary" onclick="showTasks(${user.id})">تسک</button>
                 <button class="btn btn-danger" onclick="showPosts(${user.id})">پست</button>
                 <button class="btn btn-warning" onclick="showAlbums(${user.id})">آلبوم</button>
             </td>

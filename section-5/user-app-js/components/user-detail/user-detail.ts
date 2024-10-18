@@ -1,13 +1,17 @@
-function loadUserDetails(): void {
+async function loadUserDetails(): Promise<void> {
   const urlParams: URLSearchParams = new URLSearchParams(
     window.location.search
   );
   const userId: string | null = urlParams.get("id");
 
   if (userId) {
-    const users: LocalUser[] = getUsers();
-    const user: LocalUser | undefined = users.find(
-      (user: LocalUser): boolean => user.id === parseInt(userId)
+    const localUsers: LocalUser[] = getUsers();
+    const apiUsers: UsersApi[] | null = await getApiUsers();
+
+    const users: (LocalUser | UsersApi)[] = [...localUsers, ...apiUsers!];
+
+    const user: LocalUser | UsersApi | undefined = users.find(
+      (user: LocalUser | UsersApi): boolean => user.id === parseInt(userId)
     );
 
     if (user) {
@@ -22,13 +26,14 @@ function loadUserDetails(): void {
   }
 }
 
-function displayUserDetails(user: LocalUser): void {
+function displayUserDetails(user: any): void {
+  const username: string = user.firstName + " " + user.lastName;
   const detailsDiv: HTMLElement = document.getElementById(
     "userDetail"
   ) as HTMLElement;
   detailsDiv.innerHTML = `
-        <h2>${user.firstName} ${user.lastName}</h2>
-        <p><strong>نام کاربری:</strong> ${user.userName}</p>
+        <h2>${user.name || username}</h2>
+        <p><strong>نام کاربری:</strong> ${user.userName || user.username}</p>
         <p><strong>ایمیل:</strong> ${user.email}</p>
         <p><strong>شماره تلفن:</strong> ${user.phone}</p>
     `;
