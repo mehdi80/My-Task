@@ -112,15 +112,15 @@ async function showAlbums(userId: number): Promise<void> {
     detailsDiv.innerHTML += "<p>هیچ آلبومی وجود ندارد.</p>";
   } else {
     for (const album of userAlbums) {
-      detailsDiv.innerHTML += `<h3>${album.title}</h3><ul>`;
+      detailsDiv.innerHTML += `<h3>${album.title}</h3><div>`;
 
       const photos: any[] | null = await getPhotos(album.id);
       if (photos && photos.length > 0) {
         photos.forEach((photo): void => {
-          detailsDiv.innerHTML += `<li><img src="${photo.thumbnailUrl}" alt="${photo.title}"></li>`;
+          detailsDiv.innerHTML += `<span><img src="${photo.thumbnailUrl}" alt="${photo.title}"></span>`;
         });
       }
-      detailsDiv.innerHTML += "</ul>";
+      detailsDiv.innerHTML += "</div>";
     }
   }
 }

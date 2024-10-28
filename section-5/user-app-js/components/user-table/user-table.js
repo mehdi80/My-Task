@@ -104,14 +104,14 @@ function showAlbums(userId) {
         }
         else {
             for (const album of userAlbums) {
-                detailsDiv.innerHTML += `<h3>${album.title}</h3><ul>`;
+                detailsDiv.innerHTML += `<h3>${album.title}</h3><div>`;
                 const photos = yield getPhotos(album.id);
                 if (photos && photos.length > 0) {
                     photos.forEach((photo) => {
-                        detailsDiv.innerHTML += `<li><img src="${photo.thumbnailUrl}" alt="${photo.title}"></li>`;
+                        detailsDiv.innerHTML += `<span><img src="${photo.thumbnailUrl}" alt="${photo.title}"></span>`;
                     });
                 }
-                detailsDiv.innerHTML += "</ul>";
+                detailsDiv.innerHTML += "</div>";
             }
         }
     });
