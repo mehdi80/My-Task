@@ -1,1 +1,7 @@
-<p>user-list works!</p>
+<div *ngIf="selectedUser">
+  <h2>{{ selectedUser.name }}</h2>
+  <p>Username: {{ selectedUser.username }}</p>
+  <p>Email: {{ selectedUser.email }}</p>
+  <p>Phone: {{ selectedUser.phone }}</p>
+  <p>Address: {{ selectedUser.address.street }}, {{ selectedUser.address.city }}</p>
+</div>

@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import {ActivatedRoute, RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [],
+  imports: [
+    RouterLink
+  ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
