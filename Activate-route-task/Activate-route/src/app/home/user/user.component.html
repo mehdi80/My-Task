@@ -1,20 +1,42 @@
+<nav class="navbar bg-body-tertiary">
+  <div class="container-fluid">
+    <form class="d-flex" role="search" (ngSubmit)="onSearch($event)">
+      <input class="form-control me-2" type="search" [(ngModel)]="searchValue" [ngModelOptions]="{standalone: true}" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit" >Search</button>
+    </form>
+  </div>
+</nav>
+
+
 <div class="container">
   <table class="table mt-4 table-success table-striped">
     <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
-    </tr>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Handle</th>
+      </tr>
     </thead>
+    <ng-container *ngIf="!searchedUser;else filterUser">
     <tbody>
-    <tr *ngFor="let user of users">
-      <th scope="row">{{ user.id }}</th>
-      <td>{{ user.name }}</td>
-      <td>{{ user.email }}</td>
-      <td><a class="btn btn-primary m-2" routerLink="{{user.id}}">User Detail</a></td>
-    </tr>
+      <tr *ngFor="let user of users">
+        <th scope="row">{{ user.id }}</th>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td><a class="btn btn-primary m-2" routerLink="{{user.id}}">User Detail</a></td>
+      </tr>
     </tbody>
+    </ng-container>
+    <ng-template #filterUser>
+      <tbody>
+      <tr >
+        <th scope="row">{{ searchedUser.id }}</th>
+        <td>{{ searchedUser.name }}</td>
+        <td>{{ searchedUser.email }}</td>
+        <td><a class="btn btn-primary m-2" routerLink="{{searchedUser.id}}">User Detail</a></td>
+      </tr>
+      </tbody>
+    </ng-template>
   </table>
 </div>

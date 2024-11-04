@@ -16,5 +16,7 @@ export class DataServiceService {
   getData(): Observable<any> {
     return  this.http.get(this.url);
   }
-
+  getSearchUser(query:any):Observable<object> {
+    return  this.http.get(`${this.url}?query=${query}`);
+  }
 }
