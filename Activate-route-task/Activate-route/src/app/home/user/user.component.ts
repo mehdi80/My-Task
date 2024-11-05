@@ -5,6 +5,7 @@ import {NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 
+
 @Component({
   selector: 'app-user',
   standalone: true,
@@ -12,7 +13,7 @@ import {HttpClient} from "@angular/common/http";
     RouterLink,
     NgForOf,
     FormsModule,
-    NgIf
+    NgIf,
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
@@ -39,6 +40,7 @@ export class UserComponent implements OnInit {
   showUsers(): void {
     this.data.getData().subscribe(res => {
       this.users = res;
+      this.searchedUser=res;
     })
   }
 
@@ -47,9 +49,14 @@ export class UserComponent implements OnInit {
 
     (this.searchValue) ? this.router.navigate(['user'], {queryParams: {name: this.searchValue}}) : this.router.navigate(['user'])
 
-    this.searchedUser = this.users.find((user: any) => {
-      return user.name === this.searchValue;
-    })
 
+    if (this.searchValue) {
+      this.searchedUser = this.users.filter((user:any) =>
+        user.name.toLowerCase().includes(this.searchValue.toLowerCase())
+      );
+    } else {
+      this.searchedUser = this.users;
+
+    }
   }
 }
