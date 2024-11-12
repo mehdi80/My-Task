@@ -1,13 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {Component, OnInit,} from '@angular/core';
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {NgIf} from "@angular/common";
 import {DataServiceService} from "../../services/data-service.service";
+import {SharedUserService} from "../../services/shared-user.service";
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
   imports: [
-    NgIf
+    NgIf,
+    RouterLink
   ],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css'
@@ -247,14 +249,17 @@ export class UserListComponent implements OnInit {
   //   }];
   private users: any;
   public selectedUser: any;
-
-  constructor(private route: ActivatedRoute, private dataService: DataServiceService) {
+  constructor(
+    private route: ActivatedRoute,
+    private dataService: DataServiceService,
+    private sharedUser:SharedUserService) {
   }
 
   ngOnInit(): void {
     this.dataService.getData().subscribe(res => {
       this.users = res;
       this.findUser()
+      this.sharedUser.setSharedUser(this.selectedUser)
     })
 
   }
@@ -266,4 +271,6 @@ export class UserListComponent implements OnInit {
       this.selectedUser = this.users.find((user: any) => user.id === userId);
     })
   }
+
+
 }

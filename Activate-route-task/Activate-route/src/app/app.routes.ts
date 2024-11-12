@@ -8,5 +8,5 @@ export const routes: Route[] = [
   {path: 'contact',
   loadChildren:()=> import('./home/contact/contact.routes').then(n => n.ContactRoutes)},
   {path:'user',
-  loadChildren:()=> import('./home/user/user.routes').then(m =>m.UserRoutes)}
+  loadChildren:()=> import('./home/user/user.routes').then(m =>m.UserRoutes)},
 ];

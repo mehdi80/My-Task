@@ -56,7 +56,6 @@ export class UserComponent implements OnInit {
       );
     } else {
       this.searchedUser = this.users;
-
     }
   }
 }
